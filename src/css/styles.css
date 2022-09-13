@@ -1,3 +1,7 @@
+body {
+    background-color: #fff;
+}
+
 div,
 p {
     margin: 0;
@@ -10,14 +14,16 @@ p {
     height: 35px;
     padding-top: 12px;
 
-    background-color: #25d7b2;
+    background-color: #56db6a;
     text-align: center;
     box-shadow: 2px 2px #324242;
-    
+
 }
 
 .btn {
-    text-transform: uppercase;
+    cursor: pointer;
+    background-color: #53d125;
+    border: none;
 }
 .load-more {}
 
@@ -34,6 +40,7 @@ p {
 
     box-shadow: 1px 1px #324242;
     text-decoration: none;
+        border: 1px solid #324242;
 }
 
 .photo-card {
@@ -54,4 +61,8 @@ img {
 .info-item {
     text-align: center;
     color: black;
+}
+
+.is-hidden {
+    visibility: hidden;
 }
