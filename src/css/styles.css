@@ -7,8 +7,18 @@ p {
     position: sticky;
     top: 0;
     left: 0;
+    height: 35px;
+    padding-top: 12px;
+
+    background-color: #25d7b2;
+    text-align: center;
+    box-shadow: 2px 2px #324242;
+    
 }
 
+.btn {
+    text-transform: uppercase;
+}
 .load-more {}
 
 .gallery {
@@ -22,7 +32,7 @@ p {
 .gallery__link {
     margin-bottom: 5px;
 
-    box-shadow: 1px 1px #acb3b3;
+    box-shadow: 1px 1px #324242;
     text-decoration: none;
 }
 
