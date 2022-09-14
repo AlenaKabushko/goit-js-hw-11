@@ -4,7 +4,7 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
 import { fetchImage } from './js/fetch';
-import { render } from './js/render'
+import { render } from './js/render';
 
 
 const refs = {
@@ -12,10 +12,28 @@ const refs = {
     inputRef: document.querySelector("input"),
     submitBtnRef: document.querySelector(".search"),
     loadMoreBtnRef: document.querySelector(".load-more"),
+    galleryRefs: document.querySelector(".gallery"),
 };
 
 let page = "";
 let fromInput = "";
+
+function onScroll() {
+    const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
+
+    window.scrollBy({
+        top: cardHeight * 2,
+        behavior: "smooth",
+});
+    
+    const documentRect = document.documentElement.getBoundingClientRect();
+    // console.log("bottom", documentRect.bottom);
+    // console.log("client", document.documentElement.clientHeight);
+
+    if (documentRect.bottom < document.documentElement.clientHeight + 10) {
+        onLoadMoreBtn();
+    }
+};
 
 function openLightbox() {
     const lightbox = new SimpleLightbox('.gallery a').refresh();
@@ -25,7 +43,7 @@ function isHidden(ref) {
     ref.classList.add("is-hidden")
 };
 
-function hidden(ref) {
+function isNotHidden(ref) {
     ref.classList.remove("is-hidden")
 };
 
@@ -38,13 +56,12 @@ function endOfcollectionCheck(totalHits, page){
     }
 };
 
-
 function onFormSubmit(event) {
     event.preventDefault();
     console.log("worked");
     fromInput = event.target.searchQuery.value;
     page = 1;
-    
+    refs.galleryRefs.innerHTML = "";
 
     fetchImage(fromInput, page).then(( { data }) => {
         console.log(data);
@@ -57,11 +74,14 @@ function onFormSubmit(event) {
 
         Notify.success(`Hooray! We found ${data.totalHits} images.`);
 
-        hidden(refs.loadMoreBtnRef);
+        isNotHidden(refs.loadMoreBtnRef);
         render(data.hits);
         openLightbox();
 
         endOfcollectionCheck(data.totalHits, page);
+
+
+        
     }).catch(error => console.log(error));
 }
 
@@ -88,16 +108,4 @@ function onLoadMoreBtn(event) {
 
 refs.formRef.addEventListener("submit", onFormSubmit);
 refs.loadMoreBtnRef.addEventListener("click", onLoadMoreBtn)
-
-// вынести все нотифай в функции?
-// кнопки дизайн
-// followme regs
-
-// const { height: cardHeight } = document
-//   .querySelector(".gallery")
-//   .firstElementChild.getBoundingClientRect();
-
-// window.scrollBy({
-//   top: cardHeight * 2,
-//   behavior: "smooth",
-// });
+window.addEventListener("scroll", onScroll)

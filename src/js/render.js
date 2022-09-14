@@ -23,7 +23,7 @@ function render(response) {
                 </div>
             </div>
         </a>`).join("");
-    refs.galleryRefs.innerHTML = renderItems;
+    refs.galleryRefs.insertAdjacentHTML("beforeend", renderItems);
 };
 
 export { render };
