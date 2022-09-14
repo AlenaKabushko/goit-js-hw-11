@@ -1,3 +1,5 @@
+export { render };
+
 const refs = {
     galleryRefs: document.querySelector(".gallery"),
 }
@@ -26,4 +28,3 @@ function render(response) {
     refs.galleryRefs.insertAdjacentHTML("beforeend", renderItems);
 };
 
-export { render };

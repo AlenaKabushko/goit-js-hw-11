@@ -25,10 +25,7 @@ function onScroll() {
         top: cardHeight * 2,
         behavior: "smooth",
 });
-    
     const documentRect = document.documentElement.getBoundingClientRect();
-    // console.log("bottom", documentRect.bottom);
-    // console.log("client", document.documentElement.clientHeight);
 
     if (documentRect.bottom < document.documentElement.clientHeight + 10) {
         onLoadMoreBtn();
@@ -51,6 +48,7 @@ function endOfcollectionCheck(totalHits, page){
     const totalPages = Math.ceil(totalHits / 40);
         if (page >= totalPages) {
             Notify.info("We're sorry, but you've reached the end of search results.");
+
             isHidden(refs.loadMoreBtnRef);
             return;
     }
@@ -58,53 +56,32 @@ function endOfcollectionCheck(totalHits, page){
 
 function onFormSubmit(event) {
     event.preventDefault();
-    console.log("worked");
     fromInput = event.target.searchQuery.value;
     page = 1;
     refs.galleryRefs.innerHTML = "";
 
     fetchImage(fromInput, page).then(( { data }) => {
-        console.log(data);
-        console.log(data.hits);
-        console.log(fromInput);
-
         if (data.totalHits === 0) {
             return Notify.failure("Oh sorry, there are no images matching your search query. Please try again.")
         }
 
         Notify.success(`Hooray! We found ${data.totalHits} images.`);
-
         isNotHidden(refs.loadMoreBtnRef);
         render(data.hits);
         openLightbox();
-
         endOfcollectionCheck(data.totalHits, page);
-
-
-        
     }).catch(error => console.log(error));
 }
 
 function onLoadMoreBtn(event) {
-    console.log("load more")
-
     page += 1;
 
     fetchImage(fromInput, page).then(({ data }) => {
-        console.log(data);
-        console.log(data.hits);
-        console.log(fromInput);
-        console.log(`page #${page}`)
-
         endOfcollectionCheck(data.totalHits, page);
-
         render(data.hits);
-        openLightbox();       
-        
+        openLightbox();               
     }).catch(error => console.log(error))
 };
-
-
 
 refs.formRef.addEventListener("submit", onFormSubmit);
 refs.loadMoreBtnRef.addEventListener("click", onLoadMoreBtn)
